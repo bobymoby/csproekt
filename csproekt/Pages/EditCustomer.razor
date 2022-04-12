@@ -1,0 +1,65 @@
+﻿@page "/Customers/{CustomerId}"
+@using csproekt.Entities
+@using csproekt.Data
+
+
+@if (customer is null)
+{
+    <p>Customer not found</p>
+}
+else
+{
+    <div class="edit-container">
+        <div class="edit-line">
+            <p class="edit-text">Id</p>
+            <input tabindex="-1" value=@customer.Id type="text" class="form-control edit-input edit-input-id" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Name</p>
+            <input @bind="InputName" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Address</p>
+            <input @bind="InputAddress" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Phone Number</p>
+            <input @bind="InputPhone" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <button @onclick="EditCustomerHandler" type="button" class="btn btn-success">Edit Customer</button>
+    </div>
+}
+
+
+@code {
+
+    [Parameter]
+    public string CustomerId { get; set; }
+
+    private Customer? customer;
+
+    private string? InputName { get; set; }
+    private string? InputAddress { get; set; }
+    private string? InputPhone { get; set; }
+
+
+    private void EditCustomerHandler()
+    {
+        using var context = new ProjectContext();
+        context.Customers.Update(new Customer {Id = CustomerId, Address = InputAddress ?? "", Name = InputName ?? "", Phone = InputPhone ?? ""});
+        context.SaveChanges();
+    }
+
+    protected override void OnInitialized()
+    {
+        using var context = new ProjectContext();
+        customer = context.Customers.Find(CustomerId);
+        if (customer is not null)
+        {
+            InputAddress = customer.Address;
+            InputName = customer.Name;
+            InputPhone = customer.Phone;
+        }
+    }
+
+}

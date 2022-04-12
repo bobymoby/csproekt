@@ -1,0 +1,60 @@
+﻿@page "/Customers"
+@using csproekt.Data
+@using csproekt.Entities
+
+<div class="table-container">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var customer in customers as IEnumerable<Customer>)
+            {
+                <tr>
+                    <th scope="row">@customer.Id</th>
+                    <td>@customer.Name</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.Phone</td>
+                    <td>
+                        <div class="actions">
+                            <a href="/customers/@customer.Id">
+                                <div class="edit">
+                                    <img src="assets/icons8-pencil-drawing-24.png" alt="Edit" title="Edit"/>
+                                </div>
+                            </a>
+                            <div class="delete" @onclick="@(_ => DeleteCustomer(customer.Id))">
+                                <img src="assets/icons8-multiply-24.png" alt="Delete" title="Delete"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<Customer>? customers;
+
+    protected override void OnInitialized()
+    {
+        using var context = new ProjectContext();
+        customers = context.Customers.Select(c => c).ToList();
+    }
+
+    private void DeleteCustomer(string customerId)
+    {
+        using var context = new ProjectContext();
+        context.Customers.Remove(new Customer() {Id = customerId});
+        context.SaveChanges();
+        customers = context.Customers.Select(c => c).ToList();
+    }
+}

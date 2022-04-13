@@ -1,6 +1,6 @@
 ﻿@page "/Customers"
-@using csproekt.Data
 @using csproekt.Entities
+@using csproekt.Data
 
 <div class="table-container">
     <table class="table table-bordered">
@@ -37,12 +37,40 @@
                 </tr>
             }
         }
+        <tr>
+            <th scope="row">
+                <input @bind="InputId" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </th>
+            <td>
+                <input @bind="InputName" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </td>
+            <td>
+                <input @bind="InputAddress" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+
+            </td>
+            <td>
+                <input @bind="InputPhone" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+
+            </td>
+            <td>
+                <div class="actions">
+                    <div class="create" @onclick="CreateCustomer">
+                        <img src="assets/icons8-tick-24.png" alt="Create" title="Create"/>
+                    </div>
+                </div>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
 
 @code {
     private List<Customer>? customers;
+
+    private string InputId { get; set; }
+    private string InputName { get; set; }
+    private string InputAddress { get; set; }
+    private string InputPhone { get; set; }
 
     protected override void OnInitialized()
     {
@@ -53,8 +81,19 @@
     private void DeleteCustomer(string customerId)
     {
         using var context = new ProjectContext();
-        context.Customers.Remove(new Customer() {Id = customerId});
+        context.Customers.Remove(new Customer {Id = customerId});
         context.SaveChanges();
         customers = context.Customers.Select(c => c).ToList();
     }
+
+    private void CreateCustomer()
+    {
+        using var context = new ProjectContext();
+        var newCustomer = new Customer {Id = InputId, Address = InputAddress, Name = InputName, Phone = InputPhone};
+        context.Customers.Add(newCustomer);
+        context.SaveChanges();
+        customers = context.Customers.Select(c => c).ToList();
+        InputAddress = InputId = InputName = InputPhone = "";
+    }
+
 }

@@ -1,0 +1,124 @@
+﻿@page "/Products"
+@using csproekt.Entities
+@using csproekt.Data
+
+<div class="table-container">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">Size</th>
+            <th scope="col">Color</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var product in _products)
+            {
+                <tr>
+                    <th scope="row">@product.Id</th>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price.ToString()</td>
+                    <td>@product.Size</td>
+                    <td>@product.Color</td>
+                    <td>@product.Stock.ToString()</td>
+                    <td>
+                        <div class="actions">
+                            <a href="/products/@product.Id">
+                                <div class="edit">
+                                    <img src="assets/icons8-pencil-drawing-24.png" alt="Edit" title="Edit"/>
+                                </div>
+                            </a>
+                            <div class="delete" @onclick="@(_ => DeleteProduct(product.Id))">
+                                <img src="assets/icons8-multiply-24.png" alt="Delete" title="Delete"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <th scope="row">
+                <input @bind="InputId" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </th>
+            <td>
+                <input @bind="InputName" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </td>
+            <td>
+                <input @bind="InputDescription" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </td>
+            <td>
+                <input @bind="InputPrice" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </td>
+            <td>
+                <input @bind="InputSize" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </td>
+            <td>
+                <input @bind="InputColor" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </td>
+            <td>
+                <input @bind="InputStock" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </td>
+            <td>
+                <div class="actions">
+                    <div class="create" @onclick="CreateProduct">
+                        <img src="assets/icons8-tick-24.png" alt="Create" title="Create"/>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<Product>? _products;
+
+    private string InputId { get; set; }
+    private string InputName { get; set; }
+    private string InputDescription { get; set; }
+    private double InputPrice { get; set; }
+    private string InputSize { get; set; }
+    private string InputColor { get; set; }
+    private int InputStock { get; set; }
+
+    protected override void OnInitialized()
+    {
+        using var context = new ProjectContext();
+        _products = context.Products.Select(p => p).ToList();
+    }
+
+    private void DeleteProduct(string productId)
+    {
+        using var context = new ProjectContext();
+        context.Products.Remove(new Product {Id = productId});
+        context.SaveChanges();
+        _products = context.Products.Select(p => p).ToList();
+    }
+
+    private void CreateProduct()
+    {
+        using var context = new ProjectContext();
+        var newProduct = new Product
+        {
+            Id = InputId,
+            Name = InputName,
+            Description = InputDescription,
+            Color = InputColor,
+            Price = InputPrice,
+            Size = InputSize,
+            Stock = InputStock
+        };
+
+        context.Products.Add(newProduct);
+        context.SaveChanges();
+        _products = context.Products.Select(p => p).ToList();
+    }
+
+}

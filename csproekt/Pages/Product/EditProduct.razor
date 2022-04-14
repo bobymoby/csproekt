@@ -1,0 +1,93 @@
+﻿@page "/Products/{ProductId}"
+@using csproekt.Entities
+@using csproekt.Data
+
+
+@if (_product is null)
+{
+    <p>Product does not exist</p>
+}
+else
+{
+    <div class="edit-container">
+        <div class="edit-line">
+            <p class="edit-text">Id</p>
+            <input tabindex="-1" value=@_product.Id type="text" class="form-control edit-input edit-input-id" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Name</p>
+            <input @bind="InputName" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Description</p>
+            <input @bind="InputDescription" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Price</p>
+            <input @bind="InputPrice" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Size</p>
+            <input @bind="InputSize" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Color</p>
+            <input @bind="InputColor" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="edit-line">
+            <p class="edit-text">Stock</p>
+            <input @bind="InputStock" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <button @onclick="EditProductHandler" type="button" class="btn btn-success">Edit Product</button>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string ProductId { get; set; }
+
+    private string? InputName { get; set; }
+    private string? InputDescription { get; set; }
+    private double InputPrice { get; set; }
+    private string? InputSize { get; set; }
+    private string? InputColor { get; set; }
+    private int InputStock { get; set; }
+
+    private Product? _product;
+
+    protected override void OnInitialized()
+    {
+        using var context = new ProjectContext();
+        _product = context.Products.Find(ProductId);
+
+        if (_product is not null)
+        {
+            InputName = _product.Name;
+            InputDescription = _product.Description;
+            InputPrice = _product.Price;
+            InputSize = _product.Size;
+            InputColor = _product.Color;
+            InputStock = _product.Stock;
+        }
+    }
+
+    private void EditProductHandler()
+    {
+        using var context = new ProjectContext();
+        var updatedProduct = new Product
+        {
+            Id = ProductId,
+            Name = InputName ?? "",
+            Description = InputDescription ?? "",
+            Color = InputColor ?? "",
+            Price = InputPrice,
+            Size = InputSize ?? "",
+            Stock = InputStock
+        };
+        context.Products.Update(updatedProduct);
+        context.SaveChanges();
+    }
+
+
+}

@@ -1,6 +1,47 @@
 ﻿@page "/Orders/{OrderId}"
-<h3>EditOrders</h3>
 
+<PageTitle>Edit order</PageTitle>
+
+@if (_order is null)
+{
+    <h2>Order doesn't exist</h2>
+}
+else 
+{
+    <div class="edit-container">
+            <div class="edit-line">
+                <p class="edit-text">Id</p>
+                <input tabindex="-1" value=@_order.Id type="text" class="form-control edit-input edit-input-id" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="edit-line">
+                <p class="edit-text">Date of Creation</p>
+                <input tabindex="-1" value="@_order.DateOfCreation" type="text" class="form-control edit-input edit-input-id" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="edit-line">
+                <p class="edit-text">Address</p>
+                <input @bind="InputAddress" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </div>
+            <button @onclick="EditOrderHandler" type="button" class="btn btn-success">Edit Order</button>
+        </div>
+}
 @code {
+    [Parameter]
+    public string OrderId { get; set; }
+    
+    private Order? _order;
+    
+    private string InputAddress { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        using var context = new ProjectContext();
+        _order = context.Orders.Find(OrderId);
+        InputAddress = _order.DeliveryAddress;
+    }
+
+    private void EditOrderHandler()
+    {
+        throw new NotImplementedException();
+    }
 
 }

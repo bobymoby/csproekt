@@ -1,6 +1,6 @@
 ﻿@page "/Customers"
-@using csproekt.Entities
-@using csproekt.Data
+
+<PageTitle>Customers</PageTitle>
 
 <div class="table-container">
     <table class="table table-bordered">
@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         @{
-            foreach (var customer in customers as IEnumerable<Customer>)
+            foreach (var customer in _customers)
             {
                 <tr>
                     <th scope="row">@customer.Id</th>
@@ -65,7 +65,7 @@
 </div>
 
 @code {
-    private List<Customer>? customers;
+    private List<Customer>? _customers;
 
     private string InputId { get; set; }
     private string InputName { get; set; }
@@ -75,7 +75,7 @@
     protected override void OnInitialized()
     {
         using var context = new ProjectContext();
-        customers = context.Customers.Select(c => c).ToList();
+        _customers = context.Customers.ToList();
     }
 
     private void DeleteCustomer(string customerId)
@@ -83,7 +83,7 @@
         using var context = new ProjectContext();
         context.Customers.Remove(new Customer {Id = customerId});
         context.SaveChanges();
-        customers = context.Customers.Select(c => c).ToList();
+        _customers = context.Customers.ToList();
     }
 
     private void CreateCustomer()
@@ -92,7 +92,7 @@
         var newCustomer = new Customer {Id = InputId, Address = InputAddress, Name = InputName, Phone = InputPhone};
         context.Customers.Add(newCustomer);
         context.SaveChanges();
-        customers = context.Customers.Select(c => c).ToList();
+        _customers = context.Customers.ToList();
         InputAddress = InputId = InputName = InputPhone = "";
     }
 

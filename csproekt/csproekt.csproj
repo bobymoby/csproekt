@@ -22,12 +22,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Unused\MainLayoutUnused1.css" />
-      <Content Include="Unused\NavMenuUnused1.css" />
-      <Content Include="Unused\siteUnused.css">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
+      <_ContentIncludedByDefault Remove="Unused\CounterUnused.razor" />
+      <_ContentIncludedByDefault Remove="Unused\FetchDataUnused.razor" />
+      <_ContentIncludedByDefault Remove="Unused\MainLayoutUnused.razor" />
+      <_ContentIncludedByDefault Remove="Unused\NavMenuUnused.razor" />
+      <_ContentIncludedByDefault Remove="Unused\SurveyPromptUnused.razor" />
     </ItemGroup>
 
 </Project>

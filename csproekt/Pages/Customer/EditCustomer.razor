@@ -1,9 +1,8 @@
 ﻿@page "/Customers/{CustomerId}"
-@using csproekt.Entities
-@using csproekt.Data
 
+<PageTitle>Edit customer</PageTitle>
 
-@if (customer is null)
+@if (_customer is null)
 {
     <p>Customer not found</p>
 }
@@ -12,7 +11,7 @@ else
     <div class="edit-container">
         <div class="edit-line">
             <p class="edit-text">Id</p>
-            <input tabindex="-1" value=@customer.Id type="text" class="form-control edit-input edit-input-id" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            <input tabindex="-1" value=@_customer.Id type="text" class="form-control edit-input edit-input-id" aria-label="Default" aria-describedby="inputGroup-sizing-default">
         </div>
         <div class="edit-line">
             <p class="edit-text">Name</p>
@@ -36,7 +35,7 @@ else
     [Parameter]
     public string CustomerId { get; set; }
 
-    private Customer? customer;
+    private Customer? _customer;
 
     private string? InputName { get; set; }
     private string? InputAddress { get; set; }
@@ -53,12 +52,12 @@ else
     protected override void OnInitialized()
     {
         using var context = new ProjectContext();
-        customer = context.Customers.Find(CustomerId);
-        if (customer is not null)
+        _customer = context.Customers.Find(CustomerId);
+        if (_customer is not null)
         {
-            InputAddress = customer.Address;
-            InputName = customer.Name;
-            InputPhone = customer.Phone;
+            InputAddress = _customer.Address;
+            InputName = _customer.Name;
+            InputPhone = _customer.Phone;
         }
     }
 

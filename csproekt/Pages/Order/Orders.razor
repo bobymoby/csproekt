@@ -1,6 +1,97 @@
 ﻿@page "/Orders"
-<h3>Orders</h3>
+
+<PageTitle>Orders</PageTitle>
+
+<div class="table-container">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Date of Creation</th>
+            <th scope="col">Address</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var order in _orders)
+            {
+                <tr>
+                    <th scope="row">@order.Id</th>
+                    <td>@order.DateOfCreation</td>
+                    <td>@order.DeliveryAddress</td>
+                    <td>
+                        <div class="actions">
+                            <a href="/orders/@order.Id">
+                                <div class="edit">
+                                    <img src="assets/icons8-pencil-drawing-24.png" alt="Edit" title="Edit"/>
+                                </div>
+                            </a>
+                            <div class="delete" @onclick="@(_ => DeleteOrder(order.Id))">
+                                <img src="assets/icons8-multiply-24.png" alt="Delete" title="Delete"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <th scope="row">
+                <input @bind="InputId" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </th>
+            <td>
+                
+            </td>
+            <td>
+                <input @bind="InputAddress" type="text" class="form-control edit-input" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </td>
+            <td>
+                <div class="actions">
+                    <div class="create" @onclick="CreateOrder">
+                        <img src="assets/icons8-tick-24.png" alt="Create" title="Create"/>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 @code {
+
+    private List<Order> _orders;
+
+    protected override void OnInitialized()
+    {
+        using var context = new ProjectContext();
+        _orders = context.Orders.ToList();
+    }
+
+    private void DeleteOrder(string orderId)
+    {
+        using var context = new ProjectContext();
+        context.Orders.Remove(new Order() {Id = orderId});
+        context.SaveChanges();
+        _orders = context.Orders.ToList();
+    }
+
+    private void CreateOrder()
+    {
+        using var context = new ProjectContext();
+        var order = new Order()
+        {
+            Id = InputId ?? "",
+            DateOfCreation = DateTime.Now,
+            DeliveryAddress = InputAddress ?? ""
+        };
+        context.Orders.Add(order);
+        context.SaveChanges();
+        _orders = context.Orders.ToList();
+        InputId = InputAddress = string.Empty;
+    }
+
+    public string? InputId { get; set; }
+    
+    public string? InputAddress { get; set; }
 
 }

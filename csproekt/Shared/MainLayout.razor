@@ -1,8 +1,19 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>csproekt</PageTitle>
-
 <div class="page">
+    <header>
+        <div class="page-router">
+                <a class="router-button" href="/products">
+                    Products
+                </a>
+                <a class="router-button" href="/customers">
+                    Customers
+                </a>
+                <a class="router-button" href="/orders">
+                    Orders
+                </a>
+            </div>
+    </header>
     <main>
         @Body
     </main>

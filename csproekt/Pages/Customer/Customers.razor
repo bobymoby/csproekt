@@ -6,10 +6,10 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">Phone</th>
+            <th scope="col" class="table-cols" @onclick="OrderByID">ID</th>
+            <th scope="col" class="table-cols" @onclick="OrderByName">Name</th>
+            <th scope="col" class="table-cols" @onclick="OrderByAddress">Address</th>
+            <th scope="col" class="table-cols" @onclick="OrderByPhone">Phone</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -66,6 +66,7 @@
 
 @code {
     private List<Customer>? _customers;
+    private string criteria = "id";
 
     private string InputId { get; set; }
     private string InputName { get; set; }
@@ -94,6 +95,50 @@
         context.SaveChanges();
         _customers = context.Customers.ToList();
         InputAddress = InputId = InputName = InputPhone = "";
+    }
+
+    private void OrderByID()
+    {
+        if (criteria == "id")
+            _customers.Reverse();
+        else
+        {
+            criteria = "id";
+            _customers = _customers.OrderBy(c => c.Id).ToList();
+        }
+    }
+
+    private void OrderByName()
+    {
+        if (criteria == "name")
+            _customers.Reverse();
+        else
+        {
+            criteria = "name";
+            _customers = _customers.OrderBy(c => c.Name).ToList();
+        }
+    }
+
+    private void OrderByAddress()
+    {
+        if (criteria == "address")
+            _customers.Reverse();
+        else
+        {
+            criteria = "address";
+            _customers = _customers.OrderBy(c => c.Address).ToList();
+        }
+    }
+
+    private void OrderByPhone()
+    {
+        if (criteria == "phone")
+            _customers.Reverse();
+        else
+        {
+            criteria = "phone";
+            _customers = _customers.OrderBy(c => c.Phone).ToList();
+        }
     }
 
 }

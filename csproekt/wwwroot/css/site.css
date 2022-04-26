@@ -103,3 +103,11 @@
     color: black;
     text-decoration: none;
 }
+
+.table-cols {
+    cursor: pointer;
+}
+
+.table-cols::selection, .table-cols *::selection {
+    background-color: transparent;
+}

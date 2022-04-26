@@ -6,13 +6,13 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
-            <th scope="col">Size</th>
-            <th scope="col">Color</th>
-            <th scope="col">Stock</th>
+            <th scope="col" class="table-cols" @onclick="OrderByID">ID</th>
+            <th scope="col" class="table-cols" @onclick="OrderByName">Name</th>
+            <th scope="col" class="table-cols" @onclick="OrderByDescription">Description</th>
+            <th scope="col" class="table-cols" @onclick="OrderByPrice">Price</th>
+            <th scope="col" class="table-cols" @onclick="OrderBySize">Size</th>
+            <th scope="col" class="table-cols" @onclick="OrderByColor">Color</th>
+            <th scope="col" class="table-cols" @onclick="OrderByStock">Stock</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -79,6 +79,7 @@
 
 @code {
     private List<Product>? _products;
+    private string criteria = "";
 
     private string InputId { get; set; }
     private string InputName { get; set; }
@@ -121,6 +122,76 @@
         _products = context.Products.ToList();
         InputId = InputName = InputDescription = InputColor = InputSize = string.Empty;
         InputPrice = InputStock = 0;
+    }
+    private void OrderByID() {
+        if(criteria == "id")
+        {
+            _products.Reverse();
+        }
+        else {
+            criteria = "id";
+            _products = _products.OrderBy(p => p.Id).ToList();
+        }
+    }
+    private void OrderByName() {
+        if(criteria == "name")
+        {
+            _products.Reverse();
+        }
+        else {
+            criteria = "name";
+            _products = _products.OrderBy(p => p.Name).ToList();
+        }
+    }
+    private void OrderByDescription() {
+        if(criteria == "descr")
+        {
+            _products.Reverse();
+        }
+        else {
+            criteria = "descr";
+            _products = _products.OrderBy(p => p.Description).ToList();
+        }
+    }
+    private void OrderByPrice() {
+        if(criteria == "price")
+        {
+            _products.Reverse();
+        }
+        else {
+            criteria = "price";
+            _products = _products.OrderBy(p => p.Price).ToList();
+        }
+    }
+    private void OrderBySize() {
+        if(criteria == "size")
+        {
+            _products.Reverse();
+        }
+        else {
+            criteria = "size";
+            _products = _products.OrderBy(p => p.Size).ToList();
+        }
+    }
+    private void OrderByColor() {
+        if(criteria == "color")
+        {
+            _products.Reverse();
+        }
+        else {
+            criteria = "color";
+            _products = _products.OrderBy(p => p.Color).ToList();
+        }
+    }
+    private void OrderByStock() {
+        if(criteria == "stock")
+        {
+            _products.Reverse();
+        }
+        else {
+            criteria = "stock";
+            _products = _products.OrderBy(p => p.Stock).ToList();
+        }
     }
 
 }

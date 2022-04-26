@@ -6,9 +6,9 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Date of Creation</th>
-            <th scope="col">Address</th>
+            <th scope="col" class="table-cols" @onclick="OrderByID">ID</th>
+            <th scope="col" class="table-cols" @onclick="OrderByDate">Date of Creation</th>
+            <th scope="col" class="table-cols" @onclick="OrderByAddress">Address</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -60,6 +60,7 @@
 @code {
 
     private List<Order> _orders;
+    private string criteria = "id";
 
     protected override void OnInitialized()
     {
@@ -93,5 +94,44 @@
     public string? InputId { get; set; }
     
     public string? InputAddress { get; set; }
+
+    private void OrderByID()
+    {
+        if (criteria == "id")
+        {
+            _orders.Reverse();
+        }
+        else
+        {
+            criteria = "id";
+            _orders = _orders.OrderBy(o => o.Id).ToList();
+        }
+    }
+
+    private void OrderByDate()
+    {
+        if (criteria == "date")
+        {
+            _orders.Reverse();
+        }
+        else
+        {
+            criteria = "date";
+            _orders = _orders.OrderBy(o => o.DateOfCreation).ToList();
+        }
+    }
+
+    private void OrderByAddress()
+    {
+        if (criteria == "address")
+        {
+            _orders.Reverse();
+        }
+        else
+        {
+            criteria = "address";
+            _orders = _orders.OrderBy(o => o.DeliveryAddress).ToList();
+        }
+    }
 
 }

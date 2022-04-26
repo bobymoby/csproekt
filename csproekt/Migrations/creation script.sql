@@ -1,3 +1,6 @@
+USE Project
+GO
+
 BEGIN TRANSACTION;
 GO
 
@@ -7,7 +10,7 @@ CREATE TABLE [Customers] (
     [Address] nvarchar(max) NOT NULL,
     [Phone] nvarchar(max) NOT NULL,
     CONSTRAINT [PK_Customers] PRIMARY KEY ([Id])
-);
+    );
 GO
 
 CREATE TABLE [Orders] (
@@ -15,7 +18,7 @@ CREATE TABLE [Orders] (
     [DateOfCreation] datetime2 NOT NULL,
     [DeliveryAddress] nvarchar(max) NOT NULL,
     CONSTRAINT [PK_Orders] PRIMARY KEY ([Id])
-);
+    );
 GO
 
 CREATE TABLE [Products] (
@@ -27,7 +30,7 @@ CREATE TABLE [Products] (
     [Color] nvarchar(max) NOT NULL,
     [Stock] int NOT NULL,
     CONSTRAINT [PK_Products] PRIMARY KEY ([Id])
-);
+    );
 GO
 
 INSERT INTO [dbo].[Products] ([Id], [Name], [Description], [Price], [Size], [Color], [Stock]) VALUES (1, N'Рокля', N'Състав: 100% памук', CAST(50 AS Decimal(18, 0)), N'S', N'черен', N'9')
